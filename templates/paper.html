@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Papers</title>
+{% endblock %}
+
+{% block body %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a class="navbar-brand" href="/">Topic Recommender System</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item active dropdown">
+			 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Topic Search
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a class="nav-link" href="/">Normal Search</a>
+				<a class="nav-link" href="/fpgrowth">Advanced search</a>
+			</div>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="/abstract">Abstract search</a>
+		  </li>
+		  
+		</ul>
+	  </div>
+	</nav>
+    <div class="container">
+		<div class="row justify-content-md-center">
+    <table class="table">
+		<thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Citation Count</th>
+            <th scope="col">Paper Links</th>
+        </tr>
+		</thead>
+        {% for task in tasks %}
+            {% for val in task['paper_data']%}
+            <tr>
+                <td>{{ loop.index0 + 1 }}</td>
+                <td>{{ val["title"] }}</td>
+                <td>{{ val["n_citation"] }}</td>
+				{% if 'doi' in val %}
+                <td><a href="https://www.doi.org/{{ val['doi'] }}">Go To Page</a></td>
+				{% else %}
+				<td><a href="https://www.google.com/search?q={{ '+'.join(val["title"].split()) }}">Search on Google</a></td>
+				{% endif %}
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+
+    <a href="/" style="text-align: center" type="button" class="btn btn-primary btn-lg btn-block">Go back to homepage</a>
+	</div>
+</div>
+{% endblock %}
